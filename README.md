@@ -1,5 +1,6 @@
-#задание 1
-<img width="292" height="113" alt="image" src="https://github.com/user-attachments/assets/db65e2c9-0d5b-4ba4-8207-728871abd318" />
+# задание 1
+
+![](./images/lb01/img_1_1.png)
 
 #задание 2
 <img width="314" height="154" alt="img_1_2" src="https://github.com/user-attachments/assets/cb2854fd-b2d0-4634-a909-0d7236c2327b" />
