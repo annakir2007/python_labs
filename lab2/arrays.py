@@ -20,9 +20,9 @@ print(unique_sorted(nums))
 
 def flatten(mat):
     listt = []
-    for sublist in mat:
-        for item in sublist:
-            if not item.isdigit():
+    for sublist in mat:#внутренние списки
+        for item in sublist:#по элементам
+            if not item.isdigit():#проверка на все числа
                 return 'TypeError'
             else:
                 listt.append(int(item))
