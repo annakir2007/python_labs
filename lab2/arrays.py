@@ -1,4 +1,4 @@
-""" nums = []
+nums = []
 n = int(input())
 for i in range(n):
     s = input()
@@ -16,7 +16,7 @@ def min_max(nums):
 
 def unique_sorted(nums):
     return sorted(set(nums))
-print(unique_sorted(nums)) """
+print(unique_sorted(nums))
 
 def flatten(mat):
     listt = []
