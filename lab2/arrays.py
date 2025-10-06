@@ -16,7 +16,6 @@ def min_max(nums):
 
 def unique_sorted(nums):
     return sorted(set(nums))
-print(unique_sorted(nums))
 
 def flatten(mat):
     listt = []
@@ -35,5 +34,6 @@ for i in range(n):
     inner_list = elements.split()
     mat.append(inner_list)
 
-print(mat)
+print(min_max(nums))
+print(unique_sorted(nums))
 print(flatten(mat))
