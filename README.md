@@ -44,8 +44,11 @@
 # <h4>Функция 3<h4>
 
 ![](./images/lb01/img_2_1_3(1).png)
+
 ![](./images/lb01/img_2_1_3(2).png)
+
 ![](./images/lb01/img_2_1_3(3).png)
+
 ![](./images/lb01/img_2_1_3(4).png)
 
 # задание 2
