@@ -54,4 +54,3 @@
 ![](./images/lb01/img_2_2_3(4).png)
 
 # задание 3
-![](./images/lb01/img_1_3.png)
