@@ -35,7 +35,7 @@
 ![](./images/lb01/img_2_1_3(3).png)
 ![](./images/lb01/img_2_1_3(4).png)
 
-# <h3>задание 2<h3>
+# задание 2
 # <h4>Функция 1<h4>
 ![](./images/lb01/img_2_2_1(1).png)
 ![](./images/lb01/img_2_2_1(2).png)
@@ -53,5 +53,5 @@
 ![](./images/lb01/img_2_2_3(3).png)
 ![](./images/lb01/img_2_2_3(4).png)
 
-# <h3>задание 3<h3>
+# задание 3
 ![](./images/lb01/img_2_3.png)
