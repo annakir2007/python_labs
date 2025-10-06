@@ -53,4 +53,5 @@
 ![](./images/lb01/img_2_2_3(3).png)
 ![](./images/lb01/img_2_2_3(4).png)
 
-# задание 3
+# <h3>задание 3<h3>
+![](./images/lb01/img_2_3.png)
