@@ -5,14 +5,15 @@ def format_record(rec):
     group = group.strip()#Убираем пробелы в начале и конце строки с группой
 
     if fio == '' or group == '':
-        raise ValueError("Пустое ФИО или группа")
-    if not isinstance(gpa, (float, int)):
+        return ValueError
+    if not isinstance(gpa, (float, int)):#проверка: гпа число или нет
         raise TypeError("ГПА должно быть числом")
-    parts = fio.split()
+    parts = fio.split()#разделяем строку фио на отдельные слова
     if len(parts) < 2:
         raise ValueError("ФИО должно содержать минимум фамилию и имя")
-    surname = parts[0].capitalize()
-    initials = "".join([p[0].upper() + "." for p in parts[1:3]])
+    surname = parts[0].capitalize()#записываем фамилию и делаем 1 буквы заглавной
+    #Создаём инициалы
+    initials = "".join([p[0].upper() + "." for p in parts[1:3]])#берём все слова, которые есть после фамилии; берём 1 букву для каждого слова из среза и делаем их заглавными;добавляем точку
     return f"{surname} {initials}, гр. {group}, GPA {gpa:.2f}"
 
 # Примеры
