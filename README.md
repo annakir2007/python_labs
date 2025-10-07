@@ -65,35 +65,35 @@ print(flatten(mat))
 
 # <h4>Функция 1<h4>
 
-![](./images/lb01/img_2_1_1(1).png)
+![](./images/lb02/img_2_1_1(1).png)
 
-![](./images/lb01/img_2_1_1(2).png)
+![](./images/lb02/img_2_1_1(2).png)
 
-![](./images/lb01/img_2_1_1(3).png)
+![](./images/lb02/img_2_1_1(3).png)
 
-![](./images/lb01/img_2_1_1(4).png)
+![](./images/lb02/img_2_1_1(4).png)
 
-![](./images/lb01/img_2_1_1(5).png)
+![](./images/lb02/img_2_1_1(5).png)
 
 # <h4>Функция 2<h4>
 
-![](./images/lb01/img_2_1_2(1).png)
+![](./images/lb02/img_2_1_2(1).png)
 
-![](./images/lb01/img_2_1_2(2).png)
+![](./images/lb02/img_2_1_2(2).png)
 
-![](./images/lb01/img_2_1_2(3).png)
+![](./images/lb02/img_2_1_2(3).png)
 
-![](./images/lb01/img_2_1_2(4).png)
+![](./images/lb02/img_2_1_2(4).png)
 
 # <h4>Функция 3<h4>
 
-![](./images/lb01/img_2_1_3(1).png)
+![](./images/lb02/img_2_1_3(1).png)
 
-![](./images/lb01/img_2_1_3(2).png)
+![](./images/lb02/img_2_1_3(2).png)
 
-![](./images/lb01/img_2_1_3(3).png)
+![](./images/lb02/img_2_1_3(3).png)
 
-![](./images/lb01/img_2_1_3(4).png)
+![](./images/lb02/img_2_1_3(4).png)
 
 # задание 2
 
@@ -212,35 +212,35 @@ print(col_sums(mat))
 
 # <h4>Функция 1<h4>
 
-![](./images/lb01/img_2_2_1(1).png)
+![](./images/lb02/img_2_2_1(1).png)
 
-![](./images/lb01/img_2_2_1(2).png)
+![](./images/lb02/img_2_2_1(2).png)
 
-![](./images/lb01/img_2_2_1(3).png)
+![](./images/lb02/img_2_2_1(3).png)
 
-![](./images/lb01/img_2_2_1(4).png)
+![](./images/lb02/img_2_2_1(4).png)
 
-![](./images/lb01/img_2_2_1(5).png)
+![](./images/lb02/img_2_2_1(5).png)
 
 # <h4>Функция 2<h4>
 
-![](./images/lb01/img_2_2_2(1).png)
+![](./images/lb02/img_2_2_2(1).png)
 
-![](./images/lb01/img_2_2_2(2).png)
+![](./images/lb02/img_2_2_2(2).png)
 
-![](./images/lb01/img_2_2_2(3).png)
+![](./images/lb02/img_2_2_2(3).png)
 
-![](./images/lb01/img_2_2_2(4).png)
+![](./images/lb02/img_2_2_2(4).png)
 
 # <h4>Функция 3<h4>
 
-![](./images/lb01/img_2_2_3(1).png)
+![](./images/lb02/img_2_2_3(1).png)
 
-![](./images/lb01/img_2_2_3(2).png)
+![](./images/lb02/img_2_2_3(2).png)
 
-![](./images/lb01/img_2_2_3(3).png)
+![](./images/lb02/img_2_2_3(3).png)
 
-![](./images/lb01/img_2_2_3(4).png)
+![](./images/lb02/img_2_2_3(4).png)
 
 # задание 3
 
@@ -271,4 +271,4 @@ print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
 print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
 print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
 ```
-![](./images/lb01/img_2_3.png)
+![](./images/lb02/img_2_3.png)
