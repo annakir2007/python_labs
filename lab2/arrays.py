@@ -1,4 +1,4 @@
-'''nums = []
+nums = []
 n = int(input())
 for i in range(n):
     s = input()
@@ -15,7 +15,7 @@ def min_max(nums):
     return (min(nums), int(max(nums)))
 
 def unique_sorted(nums):
-    return sorted(set(nums))'''
+    return sorted(set(nums))
 
 def flatten(mat):
     # Если вход - кортеж, преобразуем его в список
@@ -42,14 +42,14 @@ def flatten(mat):
             return 'TypeError'
     return listt
 
-'''n = int(input("Сколько списков вы хотите создать? "))
+n = int(input("Сколько списков вы хотите создать? "))
 mat = []
 for i in range(n):
     elements = input(f"Введите числа для списка {i + 1} через пробел: ")
     inner_list = elements.split()
-    mat.append(inner_list)'''
+    mat.append(inner_list)
 print(flatten([(1, 2), (3, 4)]))
 print(flatten([[1, 2], [3, 4]]))
-'''print(min_max(nums))
+print(min_max(nums))
 print(unique_sorted(nums))
-print(flatten(mat))'''
+print(flatten(mat))
