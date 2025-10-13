@@ -66,42 +66,20 @@ def top_n(freq: dict, n: int = 5) -> list:
 
 #тесты
 
-text = "ПрИвЕт\nМИр\t"
-text1 = 'ёжик, Ёлка'
-text2 = 'Hello\r\nWorld'
-text3 = '  двойные  пробелы  '
-norm = normalize(text)
-norm1 = normalize(text1)
-norm2 = normalize(text2)
-norm3 = normalize(text3)
-print(norm)  
-print(norm1)
-print(norm2)
-print(norm3)
+# normalize
+assert normalize("ПрИвЕт\nМИр\t") == "привет мир"
+assert normalize("ёжик, Ёлка") == "ежик, елка"
 
+# tokenize
+assert tokenize("привет, мир!") == ["привет", "мир"]
+assert tokenize("по-настоящему круто") == ["по-настоящему", "круто"]
+assert tokenize("2025 год") == ["2025", "год"]
 
-stroka = 'привет мир'
-stroka1 = 'hello,world!!!'
-stroka2 = 'по-настоящему круто'
-stroka3 = '2025 год'
-stroka4 = 'emoji 😃 не слово'
+# count_freq + top_n
+freq = count_freq(["a","b","a","c","b","a"])
+assert freq == {"a":3, "b":2, "c":1}
+assert top_n(freq, 2) == [("a",3), ("b",2)]
 
-tokens = tokenize(stroka)
-tokens1 = tokenize(stroka1)
-tokens2 = tokenize(stroka2)
-tokens3 = tokenize(stroka3)
-tokens4 = tokenize(stroka4)
-print(tokens) 
-print(tokens1)
-print(tokens2)
-print(tokens3)
-print(tokens4)
-
-test = ['a', 'b', 'a', 'c', 'b', 'a']
-test1 = ['bb', 'aa', 'bb', 'aa', 'cc']
-freq = count_freq(test)
-print(freq)
-
-freq1 = count_freq(test1)
-top = top_n(freq1)
-print(top)
+# тай-брейк по слову при равной частоте
+freq2 = count_freq(["bb","aa","bb","aa","cc"])
+assert top_n(freq2, 2) == [("aa",2), ("bb",2)]
