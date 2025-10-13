@@ -10,5 +10,5 @@ top_5 = top_n(freqs, n=5)
 print(f"Всего слов: {len(tokenz)}")
 print(f"Уникальных слов: {len(freqs.keys())}")
 print(f"Топ-5:")
-for i in top-5:
+for i in top_5:
     print(f"{i[0]}:{i[1]}")
