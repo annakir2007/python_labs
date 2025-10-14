@@ -1,6 +1,6 @@
 import sys
-sys.path.append("../lib")
-from text import *
+sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lib")
+from text import normalize, tokenize, count_freq, top_n
 
 text = input()
 norm_text = normalize(text)
