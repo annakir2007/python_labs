@@ -104,24 +104,24 @@ assert top_n(freq2, 2) == [("aa",2), ("bb",2)]
 # задание B
 ```
 import sys
-sys.path.append("../lib")
-from text import *
+sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lib")
+from text import normalize, tokenize, count_freq, top_n
 
 text = input()
-norm_text = normalize(text)
-tokenz = tokenize(norm_text)
-freqs = count_freq(tokenz)
-top_5 = top_n(freqs, n=5)
-print(f"Всего слов: {len(tokenz)}")
-print(f"Уникальных слов: {len(freqs.keys())}")
+norm_txt = normalize(text)
+token = tokenize(norm_txt)
+freq = count_freq(token)#создает словарь, где ключ — слово, значение — сколько раз оно встречается.
+top_5 = top_n(freq, n=5)#получает список из 5 наиболее часто встречающихся слов.
+print(f"Всего слов: {len(token)}")
+print(f"Уникальных слов: {len(freq.keys())}")# длина всех ключей в словаре
 print(f"Топ-5:")
-for i in top-5:
+for i in top_5:
     print(f"{i[0]}:{i[1]}")
 ```
 
 # <h4>Задание B<h4>
 
-![](./images/lb03/img_task_A.png)
+![](./images/lb03/img_text_stats.png)
 
 
 # <h1>ЛР1<h1>
