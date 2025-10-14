@@ -102,6 +102,13 @@ assert top_n(freq2, 2) == [("aa",2), ("bb",2)]
 ![](./images/lb03/img_task_A.png)
 
 # задание B
+
+Скрипт читает одну строку текста, вызывает функции из lib/text.py и печатает:
+
+Всего слов:
+Уникальных слов:
+Топ-5:
+Частоту повторений слов:
 ```
 import sys
 sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lib")
