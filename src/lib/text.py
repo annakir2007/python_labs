@@ -62,6 +62,8 @@ def count_freq(tokens: list[str]) -> dict:
         freq[token] = freq.get(token, 0) + 1
     return freq#словарь, где ключ — токен, значение — количество
 
+
+
 #сортирует пары в словаре по убыванию частоты(-item[1])(если равны, по алфавиту(item[0])); возвращает первые n элементов из отсортированного списка
 def top_n(freq: dict, n: int = 5) -> list:
     return sorted(freq.items(), key=lambda item: (-item[1], item[0]))[:n]
