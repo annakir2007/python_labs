@@ -179,11 +179,11 @@ if __name__ == "__main__":
 
 # <h4>Задание B<h4>
 
-![](./images/lb03/img_B_1.png)
+![](./images/lb04/img_B_1.png)
 
-![](./images/lb03/img_2_B_2.png)
+![](./images/lb04/img_2_B_2.png)
 
-![](./images/lb03/img_2_B_3.png)
+![](./images/lb04/img_2_B_3.png)
 
 # <h1>ЛР1<h1>
 # задание 1
