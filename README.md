@@ -183,7 +183,11 @@ if __name__ == "__main__":
 
 ![](./images/lb04/img_B_1.png)
 
+Содержимое файла report.csv
+
 ![](./images/lb04/img_2_B_2.png)
+
+Содержимое файла input.txt
 
 ![](./images/lb04/img_2_B_3.png)
 
