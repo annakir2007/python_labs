@@ -132,7 +132,6 @@ people_from_json.csv
 
 Используется библиотека `openpyxl` для работы с Excel и встроенный модуль `csv`. 
 ```
-# src/lab05/csv_xlsx.py
 from openpyxl import Workbook
 import csv
 from pathlib import Path
