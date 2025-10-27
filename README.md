@@ -39,11 +39,11 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
             raise ValueError("Пустой JSON или неподдерживаемая структура")
         
         # Проверка, что все элементы - словари
-        if not all(isinstance(item, dict) for item in data):#????
+        if not all(isinstance(item, dict) for item in data):
             raise ValueError("Некоторые элементы JSON не являются объектами")
 
         # Определение заголовков по первому элементу
-        headers = list(data[0].keys())#???
+        headers = list(data[0].keys())
 
         # Заполняем отсутствующие ключи
         for item in data:
