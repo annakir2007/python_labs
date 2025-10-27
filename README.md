@@ -104,90 +104,110 @@ csv_to_json(
 ```
 
 # <h4>Задание А<h4>
-Если в файле что-то написано:
 
-![](./images/lb04/img_A_2.png)
+people.json
 
-Если файл пустой:
+![](./images/lb05/img_A_1.png)
 
-![](./images/lb04/img_A_1.png)
+people.csv
+
+![](./images/lb05/img_A_2.png)
+
+people_from_csv.json
+
+![](./images/lb05/img_A_3.png)
+
+people_from_json.csv
+
+![](./images/lb05/img_A_4.png)
 
 # задание B
 
-Скрипт читает input.txt , вызывает функции из lib/text.py и печатает:  
-Всего слов:  
-Уникальных слов:  
-Топ-5:  
-Частоту повторений слов:  
+Этот скрипт выполняет преобразование CSV-файла в формат Excel:
+
+- Читает данные из указанного CSV-файла.  
+- Создает новый Excel-файл с названием  
+- Записывает в него заголовки и все строки из CSV.  
+- Автоматически устанавливает ширину колонок так, чтобы в них полностью помещалось самое длинное содержимое, при этом минимальная ширина - 8 символов.  
+
+Используется библиотека `openpyxl` для работы с Excel и встроенный модуль `csv`. 
 ```
-import sys
-import argparse
-sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lib")
-from text import normalize, tokenize, count_freq, top_n
-from io_txt_csv import read_text, write_csv
+# src/lab05/csv_xlsx.py
+from openpyxl import Workbook
+import csv
+from pathlib import Path
 
-def main():
-    # Создаем объект для чтения аргументов командной строки
-    parser = argparse.ArgumentParser()
-
-    #Считаем аргументы:
-    # --in — входной файл("data/input.txt")
-    parser.add_argument("--in", dest="input_file", default="data/input.txt")
-    # --out — выходной файл("data/report.csv")
-    parser.add_argument("--out", dest="output_file", default="data/report.csv")
-    # --encoding — кодировка файла("utf-8")
-    parser.add_argument("--encoding", default="utf-8")
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    """
+    Конвертирует CSV в XLSX. Использует openpyxl.
+    - Первый ряд CSV - заголовки.
+    - Лист называется "Sheet1".
+    - Колонки - автоширина по длине текста (минимум 8 символов).
     
-    # Распарсиваем аргументы из командной строки
-    args = parser.parse_args()
+    Ошибки:
+    - FileNotFoundError, если файл не существует.
+    - ValueError при пустом или некорректном файле.
+    """
+    csv_file = Path(csv_path)
+    if not csv_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {csv_path}")
+    
+    # Чтение CSV
+    with csv_file.open("r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+    
+    if not rows:#проверка:если список rows пустой 
+        raise ValueError("Пустой CSV файл.")
+    header = rows[0]
+    data_rows = rows[1:]
+    
+    if not header:
+        raise ValueError("CSV без заголовка.")
+    
+    # Создание книги и листа
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    
+    # Запись заголовков
+    ws.append(header)
+    
+    # Запись данных
+    for row in data_rows:
+        ws.append(row)
+    
+    # Установка автоширины колонок
+    for col_idx, col_cells in enumerate(zip(*rows)):
+        max_length = max(len(str(cell)) for cell in col_cells)
+        # Минимальная ширина 8
+        adjusted_width = max(max_length + 2, 8)
+        col_letter = ws.cell(row=1, column=col_idx + 1).column_letter
+        ws.column_dimensions[col_letter].width = adjusted_width
+    
+    # Сохранение файла
+    xlsx_path_obj = Path(xlsx_path)
+    wb.save(str(xlsx_path_obj))
 
-    # Попытка открыть и прочитать входной файл
-    try:
-        text = read_text(args.input_file)
-    except FileNotFoundError:
-        print("Файл не найден")
-        sys.exit()  # выходим из программы при ошибке
-
-    # Обрабатываем текст: делаем его нормальным и делим на слова
-    text = normalize(text)
-    tokens = tokenize(text)
-
-    # Подсчитываем, сколько раз каждое слово встречается
-    freq = count_freq(tokens)
-
-    # Сортируем слова по количеству встреч
-    sorted_words = sorted(freq.items(), key=lambda x: x[1], reverse=True)
-
-    # Создаем таблицу данных для отчета
-    header = ["word", "count"]
-    data = [[word, count] for word, count in sorted_words]
-    # Записываем результат в CSV файл
-    write_csv(data, args.output_file, header)
-
-    # Выводим статистику
-    total_words = sum(freq.values())  # Общее число всех слов
-    unique_words = len(freq)           # Количество уникальных слов
-    print(f"Всего слов: {total_words}")
-    print(f"Уникальных слов: {unique_words}")
-    print("Топ-5 слов:")
-    for word, count in top_n(freq, 5):
-        print(f"{word} - {count}")
-
-if __name__ == "__main__":
-    main()
+csv_to_xlsx(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.csv',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.xlsx'
+)
 ```
 
 # <h4>Задание B<h4>
 
-![](./images/lb04/img_B_1.png)
+csv-файл:
 
-Содержимое файла report.csv
+![](./images/lb05/img_A_2.png)
 
-![](./images/lb04/img_2_B_2.png)
+xlsx-файл:
 
-Содержимое файла input.txt
+![](./images/lb05/img_5_B_1.png)
 
-![](./images/lb04/img_2_B_3.png)
+Если файл пустой:
+
+![](./images/lb05/img_5_B_2.png)
 
 # <h1>ЛР1<h1>
 # задание 1
