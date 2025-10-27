@@ -107,19 +107,19 @@ csv_to_json(
 
 people.json
 
-![](./images/lb05/img_A_1.png)
+![](./images/lb05/img_5_A_1.png)
 
 people.csv
 
-![](./images/lb05/img_A_2.png)
+![](./images/lb05/img_5_A_2.png)
 
 people_from_csv.json
 
-![](./images/lb05/img_A_3.png)
+![](./images/lb05/img_5_A_3.png)
 
 people_from_json.csv
 
-![](./images/lb05/img_A_4.png)
+![](./images/lb05/img_5_A_4.png)
 
 # задание B
 
