@@ -198,7 +198,7 @@ csv_to_xlsx(
 
 csv-файл:
 
-![](./images/lb05/img_A_2.png)
+![](./images/lb05/img_5_A_2.png)
 
 xlsx-файл:
 
