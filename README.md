@@ -1,108 +1,106 @@
-# <h1>ЛР4<h1>
+# <h1>ЛР5<h1>
 
 # задание A
 
-1.Открывает файл на чтение в указанной кодировке.  
-2.Обрабатывает ошибки.  
-3.Создаёт/перезаписывает CSV с разделителем.  
-4.Создаёт родительские директории, если их нет.  
+Функции:  
+
+json_to_csv — преобразует JSON-файл в CSV-файл. Он читает JSON, определяет колонки по первому объекту, заполняет отсутствующие поля пустыми строками и сохраняет данные в CSV.  
+
+csv_to_json — преобразует CSV-файл обратно в JSON. Он читает CSV и создает список словарей, который затем сохраняет в JSON-файл.  
 
 ```
-from pathlib import Path
+import json
 import csv
-from typing import Sequence, Iterable, Union
+from pathlib import Path
 
-PathLike = Union[str, Path]
-
-#принимает на вход путь к файлу(path) и кодировку(encoging)
-def read_text(path: PathLike, encoding: str = "utf-8") -> str:
+def json_to_csv(json_path: str, csv_path: str) -> None:
     """
-    Считать текст из файла как одну строку.
-
-    Args:
-        path: Путь к файлу (строка или Path).
-        encoding: Кодировка для чтения (по умолчанию "utf-8").
-
-    Returns:
-        Содержимое файла в виде строки.
-
-    Пример выбора другой кодировки:
-        read_text("file.txt", encoding="cp1251")
+    Преобразует JSON-файл в CSV.
+    Поддерживает список словарей [{...}, {...}], заполняет отсутствующие поля пустыми строками.
+    Порядок колонок — как в первом объекте.
     """
-    p = Path(path)#создаёт объект path из переменной path и записывает в переменную p
-    with p.open('r', encoding=encoding) as file:
-        content = file.read()#читает файл целиком
-        #возвращается содержимое или пустая строка, если файл пустой
-        return content if content is not None else ""
-    # Если файл пустой, content будет ""
+    json_file = Path(json_path)#Создаем объект пути json_file, чтобы удобно работать с файлом
 
-def parent_dir(path: PathLike) -> None:
+    # Проверка наличия файла
+    if not json_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {json_path}")
+
+    # Чтение JSON
+    with json_file.open("r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)#Пытаемся загрузить содержимое файла как JSON
+        except json.JSONDecodeError:
+            raise ValueError("Некорректный формат JSON")
+        
+        # Проверка, что JSON - список
+        if not isinstance(data, list):
+            raise ValueError("JSON не является списком объектов")
+        if len(data) == 0:
+            raise ValueError("Пустой JSON или неподдерживаемая структура")
+        
+        # Проверка, что все элементы - словари
+        if not all(isinstance(item, dict) for item in data):#????
+            raise ValueError("Некоторые элементы JSON не являются объектами")
+
+        # Определение заголовков по первому элементу
+        headers = list(data[0].keys())#???
+
+        # Заполняем отсутствующие ключи
+        for item in data:
+            for key in headers:
+                if key not in item:
+                    item[key] = ""
+
+    # Запись CSV
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=headers)#пишет словари как строки csv, зная названия колонок
+        writer.writeheader()#записывает 1 строку с названиями колонок
+        for row in data:
+            writer.writerow(row)#каждый элемент пишется как строка csv
+
+def csv_to_json(csv_path: str, json_path: str) -> None:
     """
-    Создаёт родительские директории указанного пути, если их нет.
-
-    Args:
-        path: Путь к файлу (строка или Path).
+    Преобразует CSV в JSON (список словарей).
+    Значения сохраняются как строки.
     """
-    p = Path(path)
-    parent = p.parent#Получает родительскую директорию пути
-    if not parent.exists():#exists() возвращает True, если папка(или файл) есть в файловой системе
-        parent.mkdir(parents=True, exist_ok=True)
-#parents=True — если надо, создаст все промежуточные папки, которых нет
-#Параметр exist_ok=True — не выдаст ошибку, если папка уже существует.
+    csv_file = Path(csv_path)#создаём объект пути для файла
 
-def write_csv(rows, path, header=None):
-    """
-    Записать данные в CSV файл с разделителем ','.
+    # Проверка наличия файла
+    if not csv_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {csv_path}")
 
-    Args:
-        rows: Список строк (кортежей или списков) с данными.
-        path: Путь к CSV файлу (строка или Path).
-        header: Кортеж заголовка (имён столбцов), если указан — записывается первой строкой.
+    with open(csv_path, "r", encoding="utf-8") as f:
+        try:
+            # Проверка наличия данных
+            # Используем csv.reader для определения наличия заголовка и данных
+            reader = csv.reader(f)
+            # Переместимся обратно в позицию для DictReader
+            f.seek(0)
+            # Используем DictReader
+            dict_reader = csv.DictReader(f)
+            headers = dict_reader.fieldnames
 
-    Raises:
-        ValueError: Если длины строк в rows не совпадают.
-    """
-    if not rows:#Проверка, пустой ли список rows
-        # Нечего проверять, но если header есть — файл будет с одним заголовком
-        length = len(header) if header is not None else 0
-    else:
-        length = len(rows[0])#length — длина первой строки в списке данных.
-        #i — индекс текущей строки в списке; r — сама текущая строка (список или кортеж с элементами)
-        for i, r in enumerate(rows):
-            if len(r) != length:
-                raise ValueError
-#Перед созданием файла вызывается функция, чтобы убедиться, что папка для файла существует. Если нет — она будет создана.
-    parent_dir(path)
+            if headers is None or len(headers) == 0:
+                raise ValueError("CSV без заголовка")
+            # Проверка наличия данных
+            data_rows = list(dict_reader)
+            if len(data_rows) == 0:
+                raise ValueError("Пустой CSV")
+        except csv.Error as e:
+            raise ValueError(f"Ошибка при чтении CSV: {e}")
 
-    p = Path(path)
-    #f — переменная, которая ссылается на открытый файловый объект
-    with p.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)#принимает файловый объект и умеет записывать данные в файл в формате CSV (то есть строки с разделителями)
-        if header is not None:
-            if len(header) != length:
-                raise ValueError
-            writer.writerow(header)#Если заголовок указан, вызывается writer.writerow(header) — запись заголовка как первой строки CSV-файла.
-        for row in rows:#Итерация по всем строкам данных rows
-            writer.writerow(row)
-#все данные записываются построчно под заголовком(если он был)
+    # В JSON значения сохраняются как строки
+    with open(json_path, "w", encoding="utf-8") as jf:
+        json.dump(data_rows, jf, ensure_ascii=False, indent=2)
+json_to_csv(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.json',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.csv'
+)
 
-#пример для README
-if __name__ == "__main__":
-    try:
-        text = read_text("data/input.txt")
-        print("Прочитан текст (первые 100 символов):")
-        print(text[:100])
-    except Exception as e:
-        print("Ошибка при чтении файла:", e)
-
-    # запись CSV с заголовком и несколькими строками
-    try:
-        #создаём массив данных row, записываем их в файл с заголовками
-        rows = [("test", 3), ("apple", 3), ("banana", 5), ("orange", 2)]
-        write_csv(rows, "data/output.csv", header=("word", "count"))
-        print("CSV записан: data/output.csv")
-    except Exception as e:
-        print("Ошибка при записи CSV:", e)
+csv_to_json(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.csv',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.json'
+)
 ```
 
 # <h4>Задание А<h4>
@@ -615,3 +613,196 @@ for i in top_5:
 # <h4>Задание B<h4>
 
 ![](./images/lb03/img_text_stats.png)
+
+# <h1>ЛР4<h1>
+
+# задание A
+
+1.Открывает файл на чтение в указанной кодировке.  
+2.Обрабатывает ошибки.  
+3.Создаёт/перезаписывает CSV с разделителем.  
+4.Создаёт родительские директории, если их нет.  
+
+```
+from pathlib import Path
+import csv
+from typing import Sequence, Iterable, Union
+
+PathLike = Union[str, Path]
+
+#принимает на вход путь к файлу(path) и кодировку(encoging)
+def read_text(path: PathLike, encoding: str = "utf-8") -> str:
+    """
+    Считать текст из файла как одну строку.
+
+    Args:
+        path: Путь к файлу (строка или Path).
+        encoding: Кодировка для чтения (по умолчанию "utf-8").
+
+    Returns:
+        Содержимое файла в виде строки.
+
+    Пример выбора другой кодировки:
+        read_text("file.txt", encoding="cp1251")
+    """
+    p = Path(path)#создаёт объект path из переменной path и записывает в переменную p
+    with p.open('r', encoding=encoding) as file:
+        content = file.read()#читает файл целиком
+        #возвращается содержимое или пустая строка, если файл пустой
+        return content if content is not None else ""
+    # Если файл пустой, content будет ""
+
+def parent_dir(path: PathLike) -> None:
+    """
+    Создаёт родительские директории указанного пути, если их нет.
+
+    Args:
+        path: Путь к файлу (строка или Path).
+    """
+    p = Path(path)
+    parent = p.parent#Получает родительскую директорию пути
+    if not parent.exists():#exists() возвращает True, если папка(или файл) есть в файловой системе
+        parent.mkdir(parents=True, exist_ok=True)
+#parents=True — если надо, создаст все промежуточные папки, которых нет
+#Параметр exist_ok=True — не выдаст ошибку, если папка уже существует.
+
+def write_csv(rows, path, header=None):
+    """
+    Записать данные в CSV файл с разделителем ','.
+
+    Args:
+        rows: Список строк (кортежей или списков) с данными.
+        path: Путь к CSV файлу (строка или Path).
+        header: Кортеж заголовка (имён столбцов), если указан — записывается первой строкой.
+
+    Raises:
+        ValueError: Если длины строк в rows не совпадают.
+    """
+    if not rows:#Проверка, пустой ли список rows
+        # Нечего проверять, но если header есть — файл будет с одним заголовком
+        length = len(header) if header is not None else 0
+    else:
+        length = len(rows[0])#length — длина первой строки в списке данных.
+        #i — индекс текущей строки в списке; r — сама текущая строка (список или кортеж с элементами)
+        for i, r in enumerate(rows):
+            if len(r) != length:
+                raise ValueError
+#Перед созданием файла вызывается функция, чтобы убедиться, что папка для файла существует. Если нет — она будет создана.
+    parent_dir(path)
+
+    p = Path(path)
+    #f — переменная, которая ссылается на открытый файловый объект
+    with p.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)#принимает файловый объект и умеет записывать данные в файл в формате CSV (то есть строки с разделителями)
+        if header is not None:
+            if len(header) != length:
+                raise ValueError
+            writer.writerow(header)#Если заголовок указан, вызывается writer.writerow(header) — запись заголовка как первой строки CSV-файла.
+        for row in rows:#Итерация по всем строкам данных rows
+            writer.writerow(row)
+#все данные записываются построчно под заголовком(если он был)
+
+#пример для README
+if __name__ == "__main__":
+    try:
+        text = read_text("data/input.txt")
+        print("Прочитан текст (первые 100 символов):")
+        print(text[:100])
+    except Exception as e:
+        print("Ошибка при чтении файла:", e)
+
+    # запись CSV с заголовком и несколькими строками
+    try:
+        #создаём массив данных row, записываем их в файл с заголовками
+        rows = [("test", 3), ("apple", 3), ("banana", 5), ("orange", 2)]
+        write_csv(rows, "data/output.csv", header=("word", "count"))
+        print("CSV записан: data/output.csv")
+    except Exception as e:
+        print("Ошибка при записи CSV:", e)
+```
+
+# <h4>Задание А<h4>
+Если в файле что-то написано:
+
+![](./images/lb04/img_A_2.png)
+
+Если файл пустой:
+
+![](./images/lb04/img_A_1.png)
+
+# задание B
+
+Скрипт читает input.txt , вызывает функции из lib/text.py и печатает:  
+Всего слов:  
+Уникальных слов:  
+Топ-5:  
+Частоту повторений слов:  
+```
+import sys
+import argparse
+sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lib")
+from text import normalize, tokenize, count_freq, top_n
+from io_txt_csv import read_text, write_csv
+
+def main():
+    # Создаем объект для чтения аргументов командной строки
+    parser = argparse.ArgumentParser()
+
+    #Считаем аргументы:
+    # --in — входной файл("data/input.txt")
+    parser.add_argument("--in", dest="input_file", default="data/input.txt")
+    # --out — выходной файл("data/report.csv")
+    parser.add_argument("--out", dest="output_file", default="data/report.csv")
+    # --encoding — кодировка файла("utf-8")
+    parser.add_argument("--encoding", default="utf-8")
+    
+    # Распарсиваем аргументы из командной строки
+    args = parser.parse_args()
+
+    # Попытка открыть и прочитать входной файл
+    try:
+        text = read_text(args.input_file)
+    except FileNotFoundError:
+        print("Файл не найден")
+        sys.exit()  # выходим из программы при ошибке
+
+    # Обрабатываем текст: делаем его нормальным и делим на слова
+    text = normalize(text)
+    tokens = tokenize(text)
+
+    # Подсчитываем, сколько раз каждое слово встречается
+    freq = count_freq(tokens)
+
+    # Сортируем слова по количеству встреч
+    sorted_words = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+    # Создаем таблицу данных для отчета
+    header = ["word", "count"]
+    data = [[word, count] for word, count in sorted_words]
+    # Записываем результат в CSV файл
+    write_csv(data, args.output_file, header)
+
+    # Выводим статистику
+    total_words = sum(freq.values())  # Общее число всех слов
+    unique_words = len(freq)           # Количество уникальных слов
+    print(f"Всего слов: {total_words}")
+    print(f"Уникальных слов: {unique_words}")
+    print("Топ-5 слов:")
+    for word, count in top_n(freq, 5):
+        print(f"{word} - {count}")
+
+if __name__ == "__main__":
+    main()
+```
+
+# <h4>Задание B<h4>
+
+![](./images/lb04/img_B_1.png)
+
+Содержимое файла report.csv
+
+![](./images/lb04/img_2_B_2.png)
+
+Содержимое файла input.txt
+
+![](./images/lb04/img_2_B_3.png)
