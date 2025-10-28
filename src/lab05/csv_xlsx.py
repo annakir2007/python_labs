@@ -17,7 +17,10 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     csv_file = Path(csv_path)
     if not csv_file.exists():
         raise FileNotFoundError(f"Файл не найден: {csv_path}")
-    
+    #проверка, что на входе точно csv
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
+
     # Чтение CSV
     with csv_file.open("r", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -58,8 +61,8 @@ zip() объединяет эти строки поэлементно, созд�
         max_length = max(len(str(cell)) for cell in col_cells)#Для каждой колонки ищем длину самой длинной ячейки.
         # Минимальная ширина 8
         adjusted_width = max(max_length + 2, 8)
-        col_letter = ws.cell(row=1, column=col_idx + 1).column_letter
-        ws.column_dimensions[col_letter].width = adjusted_width
+        col_letter = ws.cell(row=1, column=col_idx + 1).column_letter#метод который возращает ячейку по заданным координатам(преобразует цифру столбца в букву столбца)
+        ws.column_dimensions[col_letter].width = adjusted_width#устанавливаем ширину текущей колонки
     
     # Сохранение файла
     xlsx_path_obj = Path(xlsx_path)

@@ -13,6 +13,9 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
     # Проверка наличия файла
     if not json_file.exists():
         raise FileNotFoundError(f"Файл не найден: {json_path}")
+    #Проверка, что на вход подаётся точно json формат
+    if not json_path.endswith('.json'):
+        raise ValueError("Файл должен иметь расширение .json")
 
     # Чтение JSON
     with json_file.open("r", encoding="utf-8") as f:
@@ -57,6 +60,10 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     # Проверка наличия файла
     if not csv_file.exists():
         raise FileNotFoundError(f"Файл не найден: {csv_path}")
+    
+    #Проверка, что на вход подаётся csv-формат
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
 
     with open(csv_path, "r", encoding="utf-8") as f:
         try:
