@@ -150,7 +150,12 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     csv_file = Path(csv_path)
     if not csv_file.exists():
         raise FileNotFoundError(f"Файл не найден: {csv_path}")
-    
+    # Проверка наличия файла
+    if not json_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {json_path}")
+    #Проверка, что на вход подаётся csv-формат
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
     # Чтение CSV
     with csv_file.open("r", encoding="utf-8") as f:
         reader = csv.reader(f)
