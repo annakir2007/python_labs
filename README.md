@@ -21,6 +21,10 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
     """
     json_file = Path(json_path)#Создаем объект пути json_file, чтобы удобно работать с файлом
 
+    #Проверка, что на вход подаётся точно json формат
+    if not json_path.endswith('.json'):
+        raise ValueError("Файл должен иметь расширение .json")
+
     # Проверка наличия файла
     if not json_file.exists():
         raise FileNotFoundError(f"Файл не найден: {json_path}")
@@ -65,6 +69,10 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     """
     csv_file = Path(csv_path)#создаём объект пути для файла
 
+    #Проверка, что на вход подаётся csv-формат
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
+        
     # Проверка наличия файла
     if not csv_file.exists():
         raise FileNotFoundError(f"Файл не найден: {csv_path}")
