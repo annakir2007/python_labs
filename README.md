@@ -182,21 +182,15 @@ import sys
 import os
 from pathlib import Path
 
-from src.lab05.json_csv import json_to_csv, csv_to_json
-from src.lab05.csv_xlsx import csv_to_xlsx
-
-# Добавляем путь для импорта модулей
-current_dir = Path(__file__).parent
-project_root = current_dir.parent.parent
-sys.path.insert(0, str(project_root))
+sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lab05")
+from json_csv import json_to_csv, csv_to_json
+from csv_xlsx import csv_to_xlsx
 
 def json2csv_command(args):
-    """Обработка команды json2csv с использованием функции из lab05"""
     try:
         if not os.path.exists(args.input):
             raise FileNotFoundError(f"Файл не найден: {args.input}")
         
-        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
         json_to_csv(args.input, args.output)
         print(f"Успешно конвертировано: {args.input} -> {args.output}")
         
@@ -205,12 +199,11 @@ def json2csv_command(args):
         sys.exit(1)
 
 def csv2json_command(args):
-    """Обработка команды csv2json с использованием функции из lab05"""
+    """Обработка команды csv2json"""
     try:
         if not os.path.exists(args.input):
             raise FileNotFoundError(f"Файл не найден: {args.input}")
         
-        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
         csv_to_json(args.input, args.output)
         print(f"Успешно конвертировано: {args.input} -> {args.output}")
         
@@ -219,15 +212,13 @@ def csv2json_command(args):
         sys.exit(1)
 
 def csv2xlsx_command(args):
-    """Обработка команды csv2xlsx с использованием функции из lab05"""
+    """Обработка команды csv2xlsx"""
     try:
         if not os.path.exists(args.input):
             raise FileNotFoundError(f"Файл не найден: {args.input}")
-        
-        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
+
         csv_to_xlsx(args.input, args.output)
-        print(f"Упрощенная конвертация: {args.input} -> {args.output}")
-        print("Примечание: для полной поддержки XLSX установите библиотеку openpyxl")
+        print(f"Успешно конвертировано: {args.input} -> {args.output}")
         
     except Exception as e:
         print(f"Ошибка: {e}", file=sys.stderr)
@@ -243,7 +234,6 @@ def main():
   python -m src.lab06.cli_convert csv2json --in data.csv --out data.json
   python -m src.lab06.cli_convert csv2xlsx --in data.csv --out data.xlsx
   
-Использует функции конвертации из лабораторной работы №5.
         """
     )
     

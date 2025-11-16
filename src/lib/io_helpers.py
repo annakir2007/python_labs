@@ -29,3 +29,22 @@ def write_file(file_path, content):
 def ensure_directory(file_path):
     """Создание директории для файла если не существует"""
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+
+def text_analyzer(text, top_n=5):
+    """
+    Анализ частот слов в тексте
+    """
+    words = text.lower().split()
+    
+    cleaned_words = []
+    for word in words:
+        word = word.strip('.,!?;:"()[]{}')
+        if word:
+            cleaned_words.append(word)
+    
+    word_freq = {}
+    for word in cleaned_words:
+        word_freq[word] = word_freq.get(word, 0) + 1
+    
+    sorted_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
+    return sorted_words[:top_n]
