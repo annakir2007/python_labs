@@ -3,7 +3,7 @@
 
 Реализовала модуль src/lab06/cli_text.py с подкомандами:
 
-stats --input [--top 5] — анализ частот слов в тексте;
+stats --input [--top 5] — анализ частот слов в тексте;  
 cat --input [-n] — вывод содержимого файла построчно.
 
 Вот код к этому заданию:
@@ -171,26 +171,19 @@ if __name__ == "__main__":
 
 Реализовала модуль src/lab06/cli_convert.py с подкомандами:
 
-json2csv --in data/samples/people.json --out data/out/people.csv - преобразование json файла в csv
-csv2json --in data/samples/people.csv --out data/out/people.json - преобразование csv файла в json
-csv2xlsx --in data/samples/people.csv --out data/out/people.xlsx - преобразование csv файла в xlsx
+json2csv --in data/samples/people.json --out data/out/people.csv - преобразование json файла в csv  
+csv2json --in data/samples/people.csv --out data/out/people.json - преобразование csv файла в json  
+csv2xlsx --in data/samples/people.csv --out data/out/people.xlsx - преобразование csv файла в xlsx  
 
 Вот код к этому заданию:
 ```
-#!/usr/bin/env python3
-"""
-CLI конвертеры данных между форматами JSON, CSV и XLSX
-Использует функции из lab05 для конвертации
-"""
-
-# ИМПОРТЫ ИЗ LAB05 - как требует ТЗ
-from src.lab05.json_csv import json_to_csv, csv_to_json
-from src.lab05.csv_xlsx import csv_to_xlsx
-
 import argparse
 import sys
 import os
 from pathlib import Path
+
+from src.lab05.json_csv import json_to_csv, csv_to_json
+from src.lab05.csv_xlsx import csv_to_xlsx
 
 # Добавляем путь для импорта модулей
 current_dir = Path(__file__).parent
@@ -283,17 +276,17 @@ if __name__ == "__main__":
 
 # <h4>cli_convert.py<h4>
 
-![](./images/lb05/img_convert_1.png)
-![](./images/lb05/img_convert_1.1.png)
-![](./images/lb05/img_convert_2.png)
-![](./images/lb05/img_convert_2.2.png)
-![](./images/lb05/img_convert_3.png)
-![](./images/lb05/img_convert_3.3.png)
-![](./images/lb05/img_convert_4.png)
-![](./images/lb05/img_convert_5.png)
-![](./images/lb05/img_convert_6.png)
-![](./images/lb05/img_convert_7.png)
-![](./images/lb05/img_convert_8.png)
+![](./images/lb06/img_convert_1.png)
+![](./images/lb06/img_convert_1.1.png)
+![](./images/lb06/img_convert_2.png)
+![](./images/lb06/img_convert_2.2.png)
+![](./images/lb06/img_convert_3.png)
+![](./images/lb06/img_convert_3.3.png)
+![](./images/lb06/img_convert_4.png)
+![](./images/lb06/img_convert_5.png)
+![](./images/lb06/img_convert_6.png)
+![](./images/lb06/img_convert_7.png)
+![](./images/lb06/img_convert_8.png)
 
 
 
