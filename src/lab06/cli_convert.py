@@ -54,8 +54,7 @@ def csv2xlsx_command(args):
         
         # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
         csv_to_xlsx(args.input, args.output)
-        print(f"Упрощенная конвертация: {args.input} -> {args.output}")
-        print("Примечание: для полной поддержки XLSX установите библиотеку openpyxl")
+        print(f"Успешно конвертировано: {args.input} -> {args.output}")
         
     except Exception as e:
         print(f"Ошибка: {e}", file=sys.stderr)
