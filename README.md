@@ -294,9 +294,9 @@ if __name__ == "__main__":
 
 Вывод:
 
-![](./images/lb06/img_convert_3.png)
+![](./images/lb06/img_convert_3(new).png)
 
-Содержимое файла:
+
 
 ![](./images/lb06/img_convert_3.3.png)
 
