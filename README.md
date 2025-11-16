@@ -1,3 +1,302 @@
+# <h1>ЛР6<h1>
+
+
+Реализовала модуль src/lab06/cli_text.py с подкомандами:
+
+stats --input [--top 5] — анализ частот слов в тексте;
+cat --input [-n] — вывод содержимого файла построчно.
+
+Вот код к этому заданию:
+
+# <h4>cli_text.py<h4>
+
+```
+import argparse
+import sys
+import os
+from pathlib import Path
+
+def read_file(file_path):
+    """Чтение файла с проверкой существования"""
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Файл не найден: {file_path}")
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return f.read()
+
+#возвращает список строк
+def read_lines(file_path):
+    """Чтение файла построчно"""
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Файл не найден: {file_path}")
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return f.readlines()
+
+def text_analyzer(text, top_n=5):
+    """
+    Анализ частот слов в тексте
+    """
+    words = text.lower().split()
+    
+    cleaned_words = []
+    for word in words:
+        word = word.strip('.,!?;:"()[]{}')
+        if word:
+            cleaned_words.append(word)
+    
+    word_freq = {}
+    for word in cleaned_words:
+        word_freq[word] = word_freq.get(word, 0) + 1
+    
+    sorted_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
+    return sorted_words[:top_n]
+
+def cat_command(input_file, number_lines=False):
+    """
+    Реализация команды cat с нумерацией строк
+    """
+    lines = read_lines(input_file)
+    
+    for i, line in enumerate(lines, 1):
+        if number_lines:
+            print(f"{i:6}  {line}", end='')
+        else:
+            print(line, end='')
+
+def stats_command(input_file, top_n=5):
+    """
+    Реализация команды stats для анализа частот слов
+    """
+    text = read_file(input_file)
+    top_words = text_analyzer(text, top_n)
+    
+    print(f"Топ-{top_n} самых частых слов в файле '{input_file}':")
+    print("-" * 40)
+    for i, (word, freq) in enumerate(top_words, 1):
+        print(f"{i:2}. {word:<20} {freq:>3} раз")
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="CLI утилиты для работы с текстом",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    
+    subparsers = parser.add_subparsers(
+        dest="command", 
+        help="Доступные команды",
+        required=True
+    )
+
+    # Подкоманда cat
+    cat_parser = subparsers.add_parser(
+        "cat", 
+        help="Вывести содержимое файла построчно"
+    )
+    cat_parser.add_argument(
+        "--input", 
+        required=True,
+        help="Путь к входному файлу"
+    )
+    cat_parser.add_argument(
+        "-n", 
+        action="store_true",
+        help="Нумеровать строки"
+    )
+
+    # Подкоманда stats
+    stats_parser = subparsers.add_parser(
+        "stats", 
+        help="Анализ частот слов в тексте"
+    )
+    stats_parser.add_argument(
+        "--input", 
+        required=True,
+        help="Путь к текстовому файлу"
+    )
+    stats_parser.add_argument(
+        "--top", 
+        type=int, 
+        default=5,
+        help="Количество топ-слов для вывода (по умолчанию: 5)"
+    )
+
+    args = parser.parse_args()
+
+    try:
+        if args.command == "cat":
+            cat_command(args.input, args.n)
+        elif args.command == "stats":
+            stats_command(args.input, args.top)
+            
+    except FileNotFoundError as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Неожиданная ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+# <h4>cli_text.py<h4>
+
+Вот результат работы команды cat:
+
+![](./images/lb06/img_text_1.png)
+
+![](./images/lb06/img_text_2.png)
+
+![](./images/lb06/img_text_3.png)
+
+![](./images/lb06/img_text_4.png)
+
+![](./images/lb06/img_text_5.png)
+
+Вот результат работы команды stat:
+
+![](./images/lb06/img_text_6.png)
+
+![](./images/lb06/img_text_7.png)
+
+![](./images/lb06/img_text_8.png)
+
+![](./images/lb06/img_text_9.png)
+
+![](./images/lb06/img_text_10.png)
+
+
+# cli_convert.py
+
+Реализовала модуль src/lab06/cli_convert.py с подкомандами:
+
+json2csv --in data/samples/people.json --out data/out/people.csv - преобразование json файла в csv
+csv2json --in data/samples/people.csv --out data/out/people.json - преобразование csv файла в json
+csv2xlsx --in data/samples/people.csv --out data/out/people.xlsx - преобразование csv файла в xlsx
+
+Вот код к этому заданию:
+```
+#!/usr/bin/env python3
+"""
+CLI конвертеры данных между форматами JSON, CSV и XLSX
+Использует функции из lab05 для конвертации
+"""
+
+# ИМПОРТЫ ИЗ LAB05 - как требует ТЗ
+from src.lab05.json_csv import json_to_csv, csv_to_json
+from src.lab05.csv_xlsx import csv_to_xlsx
+
+import argparse
+import sys
+import os
+from pathlib import Path
+
+# Добавляем путь для импорта модулей
+current_dir = Path(__file__).parent
+project_root = current_dir.parent.parent
+sys.path.insert(0, str(project_root))
+
+def json2csv_command(args):
+    """Обработка команды json2csv с использованием функции из lab05"""
+    try:
+        if not os.path.exists(args.input):
+            raise FileNotFoundError(f"Файл не найден: {args.input}")
+        
+        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
+        json_to_csv(args.input, args.output)
+        print(f"Успешно конвертировано: {args.input} -> {args.output}")
+        
+    except Exception as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+
+def csv2json_command(args):
+    """Обработка команды csv2json с использованием функции из lab05"""
+    try:
+        if not os.path.exists(args.input):
+            raise FileNotFoundError(f"Файл не найден: {args.input}")
+        
+        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
+        csv_to_json(args.input, args.output)
+        print(f"Успешно конвертировано: {args.input} -> {args.output}")
+        
+    except Exception as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+
+def csv2xlsx_command(args):
+    """Обработка команды csv2xlsx с использованием функции из lab05"""
+    try:
+        if not os.path.exists(args.input):
+            raise FileNotFoundError(f"Файл не найден: {args.input}")
+        
+        # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
+        csv_to_xlsx(args.input, args.output)
+        print(f"Упрощенная конвертация: {args.input} -> {args.output}")
+        print("💡 Примечание: для полной поддержки XLSX установите библиотеку openpyxl")
+        
+    except Exception as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="CLI-конвертеры данных между форматами JSON, CSV и XLSX",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Примеры использования:
+  python -m src.lab06.cli_convert json2csv --in data.json --out data.csv
+  python -m src.lab06.cli_convert csv2json --in data.csv --out data.json
+  python -m src.lab06.cli_convert csv2xlsx --in data.csv --out data.xlsx
+  
+Использует функции конвертации из лабораторной работы №5.
+        """
+    )
+    
+    subparsers = parser.add_subparsers(dest="command", help="Доступные команды конвертации", required=True)
+    
+    # Подкоманда json2csv
+    json2csv_parser = subparsers.add_parser("json2csv", help="Конвертировать JSON в CSV")
+    json2csv_parser.add_argument("--in", dest="input", required=True, help="Входной JSON файл")
+    json2csv_parser.add_argument("--out", dest="output", required=True, help="Выходной CSV файл")
+    json2csv_parser.set_defaults(func=json2csv_command)
+    
+    # Подкоманда csv2json
+    csv2json_parser = subparsers.add_parser("csv2json", help="Конвертировать CSV в JSON")
+    csv2json_parser.add_argument("--in", dest="input", required=True, help="Входной CSV файл")
+    csv2json_parser.add_argument("--out", dest="output", required=True, help="Выходной JSON файл")
+    csv2json_parser.set_defaults(func=csv2json_command)
+    
+    # Подкоманда csv2xlsx
+    csv2xlsx_parser = subparsers.add_parser("csv2xlsx", help="Конвертировать CSV в XLSX")
+    csv2xlsx_parser.add_argument("--in", dest="input", required=True, help="Входной CSV файл")
+    csv2xlsx_parser.add_argument("--out", dest="output", required=True, help="Выходной XLSX файл")
+    csv2xlsx_parser.set_defaults(func=csv2xlsx_command)
+    
+    args = parser.parse_args()
+    args.func(args)
+
+if __name__ == "__main__":
+    main()
+```
+
+# <h4>cli_convert.py<h4>
+
+![](./images/lb05/img_convert_1.png)
+![](./images/lb05/img_convert_1.1.png)
+![](./images/lb05/img_convert_2.png)
+![](./images/lb05/img_convert_2.2.png)
+![](./images/lb05/img_convert_3.png)
+![](./images/lb05/img_convert_3.3.png)
+![](./images/lb05/img_convert_4.png)
+![](./images/lb05/img_convert_5.png)
+![](./images/lb05/img_convert_6.png)
+![](./images/lb05/img_convert_7.png)
+![](./images/lb05/img_convert_8.png)
+
+
+
 # <h1>ЛР5<h1>
 
 # задание A
@@ -838,3 +1137,226 @@ if __name__ == "__main__":
 Содержимое файла input.txt
 
 ![](./images/lb04/img_2_B_3.png)
+
+# <h1>ЛР5<h1>
+
+# задание A
+
+Функции:  
+
+json_to_csv - преобразует JSON-файл в CSV-файл. Он читает JSON, определяет колонки по первому объекту, заполняет отсутствующие поля пустыми строками и сохраняет данные в CSV.  
+
+csv_to_json - преобразует CSV-файл обратно в JSON. Он читает CSV и создает список словарей, который затем сохраняет в JSON-файл.  
+
+```
+import json
+import csv
+from pathlib import Path
+
+def json_to_csv(json_path: str, csv_path: str) -> None:
+    """
+    Преобразует JSON-файл в CSV.
+    Поддерживает список словарей [{...}, {...}], заполняет отсутствующие поля пустыми строками.
+    Порядок колонок — как в первом объекте.
+    """
+    json_file = Path(json_path)#Создаем объект пути json_file, чтобы удобно работать с файлом
+
+    #Проверка, что на вход подаётся точно json формат
+    if not json_path.endswith('.json'):
+        raise ValueError("Файл должен иметь расширение .json")
+
+    # Проверка наличия файла
+    if not json_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {json_path}")
+
+    # Чтение JSON
+    with json_file.open("r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)#Пытаемся загрузить содержимое файла как JSON
+        except json.JSONDecodeError:
+            raise ValueError("Некорректный формат JSON")
+        
+        # Проверка, что JSON - список
+        if not isinstance(data, list):
+            raise ValueError("JSON не является списком объектов")
+        if len(data) == 0:
+            raise ValueError("Пустой JSON или неподдерживаемая структура")
+        
+        # Проверка, что все элементы - словари
+        if not all(isinstance(item, dict) for item in data):
+            raise ValueError("Некоторые элементы JSON не являются объектами")
+
+        # Определение заголовков по первому элементу
+        headers = list(data[0].keys())
+
+        # Заполняем отсутствующие ключи
+        for item in data:
+            for key in headers:
+                if key not in item:
+                    item[key] = ""
+
+    # Запись CSV
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=headers)#пишет словари как строки csv, зная названия колонок
+        writer.writeheader()#записывает 1 строку с названиями колонок
+        for row in data:
+            writer.writerow(row)#каждый элемент пишется как строка csv
+
+def csv_to_json(csv_path: str, json_path: str) -> None:
+    """
+    Преобразует CSV в JSON (список словарей).
+    Значения сохраняются как строки.
+    """
+    csv_file = Path(csv_path)#создаём объект пути для файла
+
+    #Проверка, что на вход подаётся csv-формат
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
+        
+    # Проверка наличия файла
+    if not csv_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {csv_path}")
+
+    with open(csv_path, "r", encoding="utf-8") as f:
+        try:
+            # Проверка наличия данных
+            # Используем csv.reader для определения наличия заголовка и данных
+            reader = csv.reader(f)
+            # Переместимся обратно в позицию для DictReader
+            f.seek(0)
+            # Используем DictReader
+            dict_reader = csv.DictReader(f)
+            headers = dict_reader.fieldnames
+
+            if headers is None or len(headers) == 0:
+                raise ValueError("CSV без заголовка")
+            # Проверка наличия данных
+            data_rows = list(dict_reader)
+            if len(data_rows) == 0:
+                raise ValueError("Пустой CSV")
+        except csv.Error as e:
+            raise ValueError(f"Ошибка при чтении CSV: {e}")
+
+    # В JSON значения сохраняются как строки
+    with open(json_path, "w", encoding="utf-8") as jf:
+        json.dump(data_rows, jf, ensure_ascii=False, indent=2)
+json_to_csv(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.json',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.csv'
+)
+
+csv_to_json(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.csv',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.json'
+)
+```
+
+# <h4>Задание А<h4>
+
+people.json
+
+![](./images/lb05/img_5_A_1.png)
+
+people.csv
+
+![](./images/lb05/img_5_A_2.png)
+
+people_from_csv.json
+
+![](./images/lb05/img_5_A_3.png)
+
+people_from_json.csv
+
+![](./images/lb05/img_5_A_4.png)
+
+# задание B
+
+Этот скрипт выполняет преобразование CSV-файла в формат Excel:
+
+- Читает данные из указанного CSV-файла.  
+- Создает новый Excel-файл с названием  
+- Записывает в него заголовки и все строки из CSV.  
+- Автоматически устанавливает ширину колонок так, чтобы в них полностью помещалось самое длинное содержимое, при этом минимальная ширина - 8 символов.  
+
+Используется библиотека `openpyxl` для работы с Excel и встроенный модуль `csv`. 
+```
+from openpyxl import Workbook
+import csv
+from pathlib import Path
+
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    """
+    Конвертирует CSV в XLSX. Использует openpyxl.
+    - Первый ряд CSV - заголовки.
+    - Лист называется "Sheet1".
+    - Колонки - автоширина по длине текста (минимум 8 символов).
+    
+    Ошибки:
+    - FileNotFoundError, если файл не существует.
+    - ValueError при пустом или некорректном файле.
+    """
+    csv_file = Path(csv_path)
+    if not csv_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {csv_path}")
+    # Проверка наличия файла
+    if not json_file.exists():
+        raise FileNotFoundError(f"Файл не найден: {json_path}")
+    #Проверка, что на вход подаётся csv-формат
+    if not csv_path.endswith('.csv'):
+        raise ValueError("Файл должен иметь расширение .csv")
+    # Чтение CSV
+    with csv_file.open("r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+    
+    if not rows:#проверка:если список rows пустой 
+        raise ValueError("Пустой CSV файл.")
+    header = rows[0]
+    data_rows = rows[1:]
+    
+    if not header:
+        raise ValueError("CSV без заголовка.")
+    
+    # Создание книги и листа
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    
+    # Запись заголовков
+    ws.append(header)
+    
+    # Запись данных
+    for row in data_rows:
+        ws.append(row)
+    
+    # Установка автоширины колонок
+    for col_idx, col_cells in enumerate(zip(*rows)):
+        max_length = max(len(str(cell)) for cell in col_cells)
+        # Минимальная ширина 8
+        adjusted_width = max(max_length + 2, 8)
+        col_letter = ws.cell(row=1, column=col_idx + 1).column_letter
+        ws.column_dimensions[col_letter].width = adjusted_width
+    
+    # Сохранение файла
+    xlsx_path_obj = Path(xlsx_path)
+    wb.save(str(xlsx_path_obj))
+
+csv_to_xlsx(
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/samples/people.csv',
+    'C:/Users/Анна/Desktop/misis_proga/python_labs/data/out/output.xlsx'
+)
+```
+
+# <h4>Задание B<h4>
+
+csv-файл:
+
+![](./images/lb05/img_5_A_2.png)
+
+xlsx-файл:
+
+![](./images/lb05/img_5_B_1.png)
+
+Если файл пустой:
+
+![](./images/lb05/img_5_B_2.png)
