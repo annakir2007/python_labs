@@ -277,15 +277,28 @@ if __name__ == "__main__":
 # <h4>cli_convert.py<h4>
 
 ![](./images/lb06/img_convert_1.png)
+
 ![](./images/lb06/img_convert_1.1.png)
+
+
 ![](./images/lb06/img_convert_2.png)
+
 ![](./images/lb06/img_convert_2.2.png)
+
+
 ![](./images/lb06/img_convert_3.png)
+
 ![](./images/lb06/img_convert_3.3.png)
+
+
 ![](./images/lb06/img_convert_4.png)
+
 ![](./images/lb06/img_convert_5.png)
+
 ![](./images/lb06/img_convert_6.png)
+
 ![](./images/lb06/img_convert_7.png)
+
 ![](./images/lb06/img_convert_8.png)
 
 
