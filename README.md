@@ -227,7 +227,7 @@ def csv2xlsx_command(args):
         # ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ LAB05
         csv_to_xlsx(args.input, args.output)
         print(f"Упрощенная конвертация: {args.input} -> {args.output}")
-        print("💡 Примечание: для полной поддержки XLSX установите библиотеку openpyxl")
+        print("Примечание: для полной поддержки XLSX установите библиотеку openpyxl")
         
     except Exception as e:
         print(f"Ошибка: {e}", file=sys.stderr)
@@ -276,17 +276,27 @@ if __name__ == "__main__":
 
 # <h4>cli_convert.py<h4>
 
+Вывод:
+
 ![](./images/lb06/img_convert_1.png)
+
+Содержимое файла:
 
 ![](./images/lb06/img_convert_1.1.png)
 
+Вывод:
 
 ![](./images/lb06/img_convert_2.png)
 
+Содержимое файла:
+
 ![](./images/lb06/img_convert_2.2.png)
 
+Вывод:
 
 ![](./images/lb06/img_convert_3.png)
+
+Содержимое файла:
 
 ![](./images/lb06/img_convert_3.3.png)
 
