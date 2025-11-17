@@ -168,9 +168,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Примеры использования:
-  python -m src.lab06.cli_convert json2csv --in data.json --out data.csv
-  python -m src.lab06.cli_convert csv2json --in data.csv --out data.json
-  python -m src.lab06.cli_convert csv2xlsx --in data.csv --out data.xlsx
+  python -m src.lab06.cli_convert json2csv --in people.json --out people.csv
+  python -m src.lab06.cli_convert csv2json --in people.csv --out people.json
+  python -m src.lab06.cli_convert csv2xlsx --in people.csv --out people.xlsx
 
         """
     )
