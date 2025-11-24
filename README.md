@@ -275,14 +275,15 @@ def test_round_trip(tmp_path):
     assert len(final_data) == len(original_data)
 
 ```
-
+Применение стиля black:
 
 ![](./images/lb07/img_1.png)
 
+Проверки тестов:
 
 ![](./images/lb07/img_2.png)
 
-
+Ы
 
 # <h1>ЛР6<h1>
 
