@@ -277,7 +277,7 @@ def test_round_trip(tmp_path):
 ```
 
 
-![](./images/lb06/img_1.png)
+![](./images/lb07/img_1.png)
 
 
-![](./images/lb06/img_2.png)
+![](./images/lb07/img_2.png)
