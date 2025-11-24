@@ -1,11 +1,13 @@
-a = input('a:')
+a = input("a:")
 for i in a:
-    if ',' in a: a = a.replace(',','.')
+    if "," in a:
+        a = a.replace(",", ".")
 a = float(a)
 
-b = input('b:')
+b = input("b:")
 for i in b:
-    if ',' in b: b = b.replace(',','.')
+    if "," in b:
+        b = b.replace(",", ".")
 b = float(b)
 sum = a + b
 avg = sum / 2

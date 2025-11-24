@@ -20,7 +20,7 @@ def format_record(rec):
     fio = " ".join(fio.strip().split())
     group = group.strip()
 
-    if fio == '' or group == '':
+    if fio == "" or group == "":
         raise ValueError("fio и group не должны быть пустыми строками")
 
     parts = fio.split()
@@ -30,6 +30,7 @@ def format_record(rec):
     surname = parts[0].capitalize()
     initials = "".join([p[0].upper() + "." for p in parts[1:3]])
     return f"{surname} {initials}, гр. {group}, GPA {gpa:.2f}"
+
 
 # Примеры тестов
 print(format_record(("Иванов Иван Иванович", "BIVT-25", 4.6)))
