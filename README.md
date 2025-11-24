@@ -139,10 +139,7 @@ def test_json_to_csv_basic(tmp_path):
     src = tmp_path / "test.json"
     dst = tmp_path / "test.csv"
 
-    data = [
-        {"name": "Алиса", "age": 25},
-        {"name": "Боб", "age": 30},
-    ]
+    data = [{"name": "Алиса", "age": 25}, {"name": "Боб", "age": 30},]
 
     src.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     json_to_csv(str(src), str(dst))
@@ -165,10 +162,7 @@ def test_json_to_csv_missing_fields(tmp_path):
     src = tmp_path / "test.json"
     dst = tmp_path / "test.csv"
 
-    data = [
-        {"name": "Алиса", "age": 25},
-        {"name": "Боб", "city": "Москва"},
-    ]
+    data = [{"name": "Алиса", "age": 25}, {"name": "Боб", "city": "Москва"},]
 
     src.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     json_to_csv(str(src), str(dst))
@@ -257,14 +251,10 @@ def test_round_trip(tmp_path):
     intermediate_csv = tmp_path / "intermediate.csv"
     final_json = tmp_path / "final.json"
 
-    original_data = [
-        {"name": "Алиса", "age": 25},
-        {"name": "Боб", "age": 30},
-    ]
+    original_data = [{"name": "Алиса", "age": 25}, {"name": "Боб", "age": 30},]
 
     original_json.write_text(
-        json.dumps(original_data, ensure_ascii=False), encoding="utf-8"
-    )
+        json.dumps(original_data, ensure_ascii=False), encoding="utf-8")
 
     json_to_csv(str(original_json), str(intermediate_csv))
     csv_to_json(str(intermediate_csv), str(final_json))
