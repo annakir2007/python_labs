@@ -283,7 +283,6 @@ def test_round_trip(tmp_path):
 
 ![](./images/lb07/img_2.png)
 
-Ы
 
 # <h1>ЛР6<h1>
 
