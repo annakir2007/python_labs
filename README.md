@@ -2,7 +2,7 @@
 
 # <h4>test_text.py<h4>
 
-Написала автотесты для всех публичных функций модуля:
+Написала автотесты для функций модуля:
 
 normalize(text: str) -> str  
 tokenize(text: str) -> list[str]  
