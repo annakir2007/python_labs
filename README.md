@@ -96,7 +96,7 @@ def test_top_n_edge_cases():
 
 
 def test_full_pipeline():
-    """Интеграционный тест всего пайплайна."""
+    """Интеграционный тест всего алгоритма."""
     text = "Раз два три, раз два три. Раз раз раз!"
 
     normalized = normalize(text)
