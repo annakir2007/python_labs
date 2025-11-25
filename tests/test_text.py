@@ -5,7 +5,7 @@ from src.lib.text import normalize, tokenize, count_freq, top_n
 def test_normalize_basic():
     """Тест базовых случаев нормализации."""
     assert normalize("ПрИвЕт\nМИр\t") == "привет мир"
-    assert normalize("ёжик, Ёлка") == "ежик елка"  # исправлено!
+    assert normalize("ёжик, Ёлка") == "ежик елка"
     assert normalize("Hello\r\nWorld") == "hello world"
     assert normalize("  двойные   пробелы  ") == "двойные пробелы"
 
@@ -14,7 +14,7 @@ def test_normalize_edge_cases():
     """Тест граничных случаев нормализации."""
     assert normalize("") == ""
     assert normalize("   ") == ""
-    assert normalize("ТЕСТ!") == "тест"  # исправлено!
+    assert normalize("ТЕСТ!") == "тест"
     assert normalize("раз,два,три") == "раз два три"
 
 
@@ -32,7 +32,7 @@ def test_tokenize_edge_cases():
 
     text = "Привет, мир! Как дела?"
     result = tokenize(text)
-    expected = ["привет", "мир", "как", "дела"]  # исправлено!
+    expected = ["привет", "мир", "как", "дела"]
     assert result == expected
 
 
@@ -86,7 +86,7 @@ def test_full_pipeline():
     text = "Раз два три, раз два три. Раз раз раз!"
 
     normalized = normalize(text)
-    assert normalized == "раз два три раз два три раз раз раз"  # исправлено!
+    assert normalized == "раз два три раз два три раз раз раз"
 
     tokens = tokenize(normalized)
     expected_tokens = ["раз", "два", "три", "раз", "два", "три", "раз", "раз", "раз"]

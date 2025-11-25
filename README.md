@@ -4,10 +4,10 @@
 
 Написала автотесты для всех публичных функций модуля:
 
-normalize(text: str) -> str
-tokenize(text: str) -> list[str]
-count_freq(tokens: list[str]) -> dict[str, int]
-top_n(freq: dict[str, int], n: int) -> list[tuple[str, int]]
+normalize(text: str) -> str  
+tokenize(text: str) -> list[str]  
+count_freq(tokens: list[str]) -> dict[str, int]  
+top_n(freq: dict[str, int], n: int) -> list[tuple[str, int]]  
 
 Вот код к этому заданию:
 
