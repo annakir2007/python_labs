@@ -2,31 +2,31 @@
   {
     "fio": "Петр Иванов",
     "birthdate": "1990-01-01",
-    "group": "SE-01",
-    "gpa": 4.0
+    "group": "AF-01",
+    "gpa": 5.0
   },
   {
     "fio": "Иван Егоров",
     "birthdate": "1990-01-01",
-    "group": "SE-110",
-    "gpa": 3.5
+    "group": "AF-110",
+    "gpa": 4.5
   },
   {
     "fio": "Иван Иванов",
     "birthdate": "1990-01-01",
-    "group": "SE-11",
-    "gpa": 5.0
+    "group": "AF-11",
+    "gpa": 2.0
   },
   {
     "fio": "Петр Петров",
     "birthdate": "1990-01-01",
-    "group": "SE-02",
-    "gpa": 2.5
+    "group": "AF-02",
+    "gpa": 3.5
   },
   {
     "fio": "Иван Егоров",
     "birthdate": "1990-01-01",
-    "group": "SE-20",
-    "gpa": 3.0
+    "group": "AF-20",
+    "gpa": 4.0
   }
 ]
