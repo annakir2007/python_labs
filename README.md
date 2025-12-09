@@ -109,27 +109,7 @@ class Group:
                 return True
 
         return False
-
-    @staticmethod
-    def find_max(array):
-        if not array:
-            return 0
-        m = -float("inf")
-        for i in range(len(array)):
-            if array[i] > m:
-                m = array[i]
-        return m
-
-    @staticmethod
-    def find_min(array):
-        if not array:
-            return 0
-        m = float("inf")
-        for i in range(len(array)):
-            if array[i] < m:
-                m = array[i]
-        return m
-
+        
     def stats(self):
         students = self._read_all()
         
