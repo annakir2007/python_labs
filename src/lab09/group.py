@@ -7,7 +7,10 @@ from models import Student
 
 class Group:
     def __init__(self, storage_path: str):
+        # Полный путь к файлу
         self.path = Path(storage_path)
+        # Создаем директорию, если она не существует
+        self.path.parent.mkdir(parents=True, exist_ok=True)
 
     def _read_all(self):
         # Создаем файл если не существует
@@ -134,3 +137,110 @@ class Group:
             "groups": group_counts,
             "top_5": top_5_list,
         }
+
+
+# ТЕСТЫ
+if __name__ == "__main__":
+    print("=" * 50)
+    print("НАЧАЛО ТЕСТОВ")
+    print("=" * 50)
+    
+    #Создаем объект Group с новым путем и названием файла
+    #Указываем полный путь к файлу students.csv
+    csv_path = r"C:\Users\Анна\Desktop\misis_proga\python_labs\data\lab09\students.csv"
+    group = Group(csv_path)
+    
+    # 1. Проверяем список (должен быть пустым или содержать данные)
+    print("\n1. Список студентов (начальный):")
+    students_list = group.list()
+    print(f"   {students_list}")
+    print(f"   Количество: {len(students_list)}")
+    
+    # 2. Добавляем студентов
+    print("\n2. Добавляем студентов...")
+    
+    # Студент 1
+    student1 = Student(
+        fio="Иванов Иван Иванович",
+        birthdate=date(2000, 5, 15),
+        group="ИТ-101",
+        gpa=4.5
+    )
+    group.add(student1)
+    print(f"   Добавлен: {student1.fio}")
+    
+    # Студент 2
+    student2 = Student(
+        fio="Петрова Анна Сергеевна",
+        birthdate=date(2001, 3, 20),
+        group="ИТ-102",
+        gpa=4.8
+    )
+    group.add(student2)
+    print(f"   Добавлен: {student2.fio}")
+    
+    # Студент 3
+    student3 = Student(
+        fio="Сидоров Алексей Петрович",
+        birthdate=date(1999, 11, 10),
+        group="ИТ-101",
+        gpa=3.9
+    )
+    group.add(student3)
+    print(f"   Добавлен: {student3.fio}")
+    
+    # 3. Выводим всех студентов
+    print("\n3. Все студенты:")
+    all_students = group.list()
+    for i, student in enumerate(all_students, 1):
+        print(f"   {i}. {student['fio']} | {student['group']} | GPA: {student['gpa']}")
+    
+    # 4. Тестируем поиск
+    print("\n4. Поиск студентов:")
+    search_results = group.find("Иванов")
+    print(f"   Поиск 'Иванов': {[s['fio'] for s in search_results]}")
+    
+    search_results = group.find("анна")
+    print(f"   Поиск 'анна' (без регистра): {[s['fio'] for s in search_results]}")
+    
+    # 5. Тестируем обновление
+    print("\n5. Обновление студента...")
+    updated = group.update("Иванов Иван Иванович", gpa=4.7, group="ИТ-103")
+    print(f"   Обновлен Иванов: {updated}")
+    print(f"   Новые данные: {group.find('Иванов')[0]}")
+    
+    # 6. Тестируем статистику
+    print("\n6. Статистика группы:")
+    stats = group.stats()
+    print(f"   Всего студентов: {stats['count']}")
+    print(f"   Минимальный GPA: {stats['min_gpa']}")
+    print(f"   Максимальный GPA: {stats['max_gpa']}")
+    print(f"   Средний GPA: {stats['avg_gpa']:.2f}")
+    print(f"   Распределение по группам: {stats['groups']}")
+    print("   Топ-5 студентов:")
+    for i, top_student in enumerate(stats['top_5'], 1):
+        print(f"     {i}. {top_student['fio']} - GPA: {top_student['gpa']}")
+    
+    # 7. Тестируем удаление
+    print("\n7. Удаление студента...")
+    removed = group.remove("Сидоров Алексей Петрович")
+    print(f"   Удален Сидоров: {removed}")
+    print(f"   Осталось студентов: {len(group.list())}")
+    
+    # 8. Финальный список
+    print("\n8. Финальный список студентов:")
+    final_list = group.list()
+    for i, student in enumerate(final_list, 1):
+        print(f"   {i}. {student['fio']} | {student['group']} | GPA: {student['gpa']}")
+    
+    print("\n" + "=" * 50)
+    print("ТЕСТЫ ЗАВЕРШЕНЫ")
+    print("=" * 50)
+    
+    # Дополнительно: показываем содержимое CSV файла
+    print(f"\nСодержимое файла {group.path}:")
+    print("-" * 50)
+    if group.path.exists():
+        with open(group.path, 'r', encoding='utf-8') as f:
+            print(f.read())
+    print("-" * 50)
