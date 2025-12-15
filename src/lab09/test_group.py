@@ -1,6 +1,6 @@
 # test_group_manager.py
 from datetime import date
-from group import Group
+from python_labs.src.lab09.group_n import Group
 import sys
 sys.path.append(r"C:\Users\Анна\Desktop\misis_proga\python_labs\src\lab08")
 from models import Student
